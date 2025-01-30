@@ -79,7 +79,6 @@ class LoanPaymentScreen extends StatelessWidget {
                 decoration: InputDecoration(
                   hintText: "Day/Month/Year",
                   border: OutlineInputBorder(),
-                  enabled: false,
                 ),
               ),
 
@@ -103,7 +102,6 @@ class LoanPaymentScreen extends StatelessWidget {
                   hintText: "20,00,000",
                   suffixIcon: const Icon(Icons.currency_rupee),
                   border: OutlineInputBorder(),
-                  enabled: false,
                 ),
               ),
 
