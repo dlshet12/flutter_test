@@ -34,10 +34,12 @@ class LoanPaymentScreen extends StatelessWidget {
               Center(
                 child: Column(
                   children: [
-                    Image.network(
-                      'https://www.freemalaysiatoday.com/_next/image/?url=https%3A%2F%2Fmedia.freemalaysiatoday.com%2Fwp-content%2Fuploads%2F2024%2F07%2F0949d2ab-hindenburg.jpg&w=1200&q=75',
-                      height: 150,
-                    ),
+                   Image.asset(
+  'assets/hindenburg.webp',  // Path to local image
+  height: 150,
+  fit: BoxFit.cover, // Optional: Adjusts how the image fits
+),
+
                     const SizedBox(height: 20),
                     const Text(
                       "Let's Accelerate Your Aspirations with Rapid Loan Disbursement!",
