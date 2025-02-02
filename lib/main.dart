@@ -129,7 +129,7 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
               const Text("Pending Amount"),
               TextField(
                 decoration: InputDecoration(
-                  hintText: "20,00,000",
+                  hintText: "2,00,000",
                   suffixIcon: const Icon(Icons.currency_rupee),
                   border: OutlineInputBorder(),
                 ),
