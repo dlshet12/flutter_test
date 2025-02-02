@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +22,43 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoanPaymentScreen extends StatelessWidget {
+class LoanPaymentScreen extends StatefulWidget {
+  @override
+  _LoanPaymentScreenState createState() => _LoanPaymentScreenState();
+}
+
+class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
+  List<String> imageUrls = [];
+  bool isLoading = false;
+
+  Future<void> fetchImages() async {
+  setState(() {
+    isLoading = true;
+  });
+
+  try {
+    final response = await http.get(
+      Uri.parse('https://api.unsplash.com/photos/random?count=5&client_id=uEBT29Z36M1XkJ15L-PmQZxcSvlxR_fhARYY4DYtMTE'),
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      setState(() {
+        imageUrls = data.map((item) => item['urls']['regular'].toString()).toList();
+      });
+    } else {
+      print("Failed to load images: ${response.statusCode}");
+    }
+  } catch (e) {
+    print("Error fetching images: $e");
+  }
+
+  setState(() {
+    isLoading = false;
+  });
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,18 +72,16 @@ class LoanPaymentScreen extends StatelessWidget {
               Center(
                 child: Column(
                   children: [
-                   Image.asset(
-  'assets/hindenburg.webp',  // Path to local image
-  height: 150,
-  fit: BoxFit.cover, // Optional: Adjusts how the image fits
-),
-
+                    Image.asset(
+                      'assets/hindenburg.webp',
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
                     const SizedBox(height: 20),
                     const Text(
                       "Let's Accelerate Your Aspirations with Rapid Loan Disbursement!",
                       textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 5),
                     const Text(
@@ -58,13 +94,9 @@ class LoanPaymentScreen extends StatelessWidget {
                 ),
               ),
 
-              // Prospect Number
-              const Text("Prospect No: 7653243",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-
+              const Text("Prospect No: 7653243", style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
 
-              // Loan Amount
               const Text("Loan Amount"),
               TextField(
                 decoration: InputDecoration(
@@ -73,7 +105,6 @@ class LoanPaymentScreen extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
               ),
-
               const SizedBox(height: 10),
 
               const Text("Disbursed Till Date"),
@@ -83,7 +114,6 @@ class LoanPaymentScreen extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
               ),
-
               const SizedBox(height: 10),
 
               const Text(
@@ -94,10 +124,8 @@ class LoanPaymentScreen extends StatelessWidget {
                   decoration: TextDecoration.underline,
                 ),
               ),
-
               const SizedBox(height: 10),
 
-              // Pending Amount
               const Text("Pending Amount"),
               TextField(
                 decoration: InputDecoration(
@@ -106,7 +134,6 @@ class LoanPaymentScreen extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
               ),
-
               const SizedBox(height: 20),
 
               // Proceed Button
@@ -115,20 +142,30 @@ class LoanPaymentScreen extends StatelessWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepOrange,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24, vertical: 12), // Adjust width
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(6), // Reduced border radius
+                      borderRadius: BorderRadius.circular(6),
                     ),
                   ),
-                  onPressed: () {},
-                  child: const Text(
-                    "Proceed",
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  onPressed: fetchImages,
+                  child: isLoading
+                      ? CircularProgressIndicator(color: Colors.white)
+                      : const Text("Proceed", style: TextStyle(color: Colors.white)),
                 ),
               ),
+
+              const SizedBox(height: 20),
+
+              // Display images from API
+              if (imageUrls.isNotEmpty)
+                Column(
+                  children: imageUrls.map((url) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Image.network(url, height: 150, fit: BoxFit.cover),
+                    );
+                  }).toList(),
+                ),
             ],
           ),
         ),
