@@ -32,41 +32,42 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
   bool isLoading = false;
 
   Future<void> fetchImages() async {
-  setState(() {
-    isLoading = true;
-  });
+    setState(() {
+      isLoading = true;
+    });
 
-  try {
-    final response = await http.get(
-      Uri.parse('https://api.unsplash.com/photos/random?count=5&client_id=uEBT29Z36M1XkJ15L-PmQZxcSvlxR_fhARYY4DYtMTE'),
-    );
+    try {
+      final response = await http.get(
+        Uri.parse(
+            'https://api.unsplash.com/photos/random?count=5&client_id=uEBT29Z36M1XkJ15L-PmQZxcSvlxR_fhARYY4DYtMTE'),
+      );
 
-    if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      setState(() {
-        imageUrls = data.map((item) => item['urls']['regular'].toString()).toList();
-      });
-    } else {
-      print("Failed to load images: ${response.statusCode}");
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        setState(() {
+          imageUrls = data
+              .map((item) => item['urls']['regular'].toString())
+              .toList();
+        });
+      } else {
+        print("Failed to load images: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error fetching images: $e");
     }
-  } catch (e) {
-    print("Error fetching images: $e");
+
+    setState(() {
+      isLoading = false;
+    });
   }
-
-  setState(() {
-    isLoading = false;
-  });
-}
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
@@ -81,7 +82,8 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
                     const Text(
                       "Let's Accelerate Your Aspirations with Rapid Loan Disbursement!",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 5),
                     const Text(
@@ -93,10 +95,9 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
                   ],
                 ),
               ),
-
-              const Text("Prospect No: 7653243", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Prospect No: 7653243",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
-
               const Text("Loan Amount"),
               TextField(
                 decoration: InputDecoration(
@@ -106,7 +107,6 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-
               const Text("Disbursed Till Date"),
               TextField(
                 decoration: InputDecoration(
@@ -115,7 +115,6 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-
               const Text(
                 "Click To View Details",
                 style: TextStyle(
@@ -125,7 +124,6 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-
               const Text("Pending Amount"),
               TextField(
                 decoration: InputDecoration(
@@ -142,7 +140,8 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepOrange,
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
@@ -150,10 +149,10 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
                   onPressed: fetchImages,
                   child: isLoading
                       ? CircularProgressIndicator(color: Colors.white)
-                      : const Text("Proceed", style: TextStyle(color: Colors.white)),
+                      : const Text("Proceed",
+                          style: TextStyle(color: Colors.white)),
                 ),
               ),
-
               const SizedBox(height: 20),
 
               // Display images from API
@@ -162,7 +161,8 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
                   children: imageUrls.map((url) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Image.network(url, height: 150, fit: BoxFit.cover),
+                      child: Image.network(url,
+                          height: 150, fit: BoxFit.cover),
                     );
                   }).toList(),
                 ),
