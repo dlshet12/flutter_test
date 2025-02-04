@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
-import './pages/home.dart'; // Import the Home page
+import 'package:provider/provider.dart';
+import './pages/loan_provider.dart';
+import './pages/home.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoanProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +25,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
       ),
-       home: LoanPaymentScreen(), // Set HomeScreen as the initial page
+      home: LoanPaymentScreen(),
     );
   }
 }

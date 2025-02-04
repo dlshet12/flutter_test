@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import './loan_provider.dart';
 import 'dart:convert';
 import 'intro.dart';  
 
@@ -13,6 +15,7 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
   List<String> imageUrls = [];
   bool isLoading = false;
    TextEditingController loanAmountController = TextEditingController();
+   TextEditingController pendingAmountController = TextEditingController();
 
   Future<void> fetchImages() async {
     setState(() {
@@ -45,6 +48,11 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+       final loanProvider = Provider.of<LoanProvider>(context);
+
+    // Update the text field when provider changes
+    pendingAmountController.text = loanProvider.pendingAmount.toInt().toString();
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -111,6 +119,7 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
               const SizedBox(height: 10),
               const Text("Pending Amount"),
               TextField(
+                 controller: pendingAmountController,
                 keyboardType: TextInputType.number, // Allows numeric input
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: InputDecoration(
@@ -118,6 +127,10 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
                   suffixIcon: const Icon(Icons.currency_rupee),
                   border: OutlineInputBorder(),
                 ),
+                   onChanged: (value) {
+                double newAmount = double.tryParse(value) ?? 0.0;
+                loanProvider.setPendingAmount(newAmount);
+              },
               ),
               const SizedBox(height: 20),
 
