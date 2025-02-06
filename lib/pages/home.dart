@@ -26,10 +26,11 @@ void initState() {
   // Initialize with provider's value
   pendingAmountController.text = loanProvider.pendingAmount.toInt().toString();
 
-  // Listen to provider changes
-  loanProvider.addListener(() {
+loanProvider.addListener(() {
+  if (pendingAmountController.text != loanProvider.pendingAmount.toInt().toString()) {
     pendingAmountController.text = loanProvider.pendingAmount.toInt().toString();
-  });
+  }
+});
 }
 
 
@@ -140,6 +141,7 @@ void initState() {
                 showCursor: _isTextFieldTapped, // Initially false, will change on tap
                   readOnly: !_isTextFieldTapped,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                autofillHints: null,
                 decoration: InputDecoration(
                   hintText: "2,00,000",
                   suffixIcon: const Icon(Icons.currency_rupee),
