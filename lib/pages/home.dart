@@ -14,6 +14,7 @@ class LoanPaymentScreen extends StatefulWidget {
 class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
   List<String> imageUrls = [];
   bool isLoading = false;
+  bool _isTextFieldTapped = false; 
    TextEditingController loanAmountController = TextEditingController();
    TextEditingController pendingAmountController = TextEditingController();
 
@@ -136,12 +137,19 @@ void initState() {
               TextField(
                  controller: pendingAmountController,
                 keyboardType: TextInputType.number, // Allows numeric input
+                showCursor: _isTextFieldTapped, // Initially false, will change on tap
+                  readOnly: !_isTextFieldTapped,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: InputDecoration(
                   hintText: "2,00,000",
                   suffixIcon: const Icon(Icons.currency_rupee),
                   border: OutlineInputBorder(),
                 ),
+                  onTap: () {
+    setState(() {
+      _isTextFieldTapped = true; // Enables cursor on tap
+    });
+  },
                    onChanged: (value) {
                 double newAmount = double.tryParse(value) ?? 0.0;
                 loanProvider.setPendingAmount(newAmount);

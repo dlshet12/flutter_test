@@ -4,6 +4,7 @@ import 'loan_provider.dart';
 
 class IntroScreen extends StatefulWidget {
   final String loanAmount;
+  
 
   const IntroScreen({Key? key, required this.loanAmount}) : super(key: key);
 
@@ -13,6 +14,7 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen> {
   late TextEditingController pendingAmountController;
+bool _isTextFieldTapped = false;
 
   @override
   void initState() {
