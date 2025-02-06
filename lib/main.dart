@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './pages/loan_provider.dart';
-import './pages/home.dart';
+import './pages/main_screen.dart';  // Import your MainScreen
 
 void main() {
   runApp(
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
       ),
-      home: LoanPaymentScreen(),
+      home: MainScreen(), // Use MainScreen instead of LoanPaymentScreen
     );
   }
 }
