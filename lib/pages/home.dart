@@ -17,6 +17,21 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
    TextEditingController loanAmountController = TextEditingController();
    TextEditingController pendingAmountController = TextEditingController();
 
+@override
+void initState() {
+  super.initState();
+  final loanProvider = Provider.of<LoanProvider>(context, listen: false);
+  
+  // Initialize with provider's value
+  pendingAmountController.text = loanProvider.pendingAmount.toInt().toString();
+
+  // Listen to provider changes
+  loanProvider.addListener(() {
+    pendingAmountController.text = loanProvider.pendingAmount.toInt().toString();
+  });
+}
+
+
   Future<void> fetchImages() async {
     setState(() {
       isLoading = true;
@@ -51,7 +66,7 @@ class _LoanPaymentScreenState extends State<LoanPaymentScreen> {
        final loanProvider = Provider.of<LoanProvider>(context);
 
     // Update the text field when provider changes
-    pendingAmountController.text = loanProvider.pendingAmount.toInt().toString();
+    // pendingAmountController.text = loanProvider.pendingAmount.toInt().toString();
 
     return Scaffold(
       body: SingleChildScrollView(
