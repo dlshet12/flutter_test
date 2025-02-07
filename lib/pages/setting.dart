@@ -11,28 +11,6 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(title: Text("Settings & Images")),
       body: Column(
         children: [
-          // Fetch Settings Data
-          FutureBuilder(
-            future: loanProvider.fetchSettingsData(),
-            builder: (context, snapshot) {
-              if (loanProvider.settingsData == null) {
-                return Center(child: CircularProgressIndicator());
-              } else {
-                return Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Text("Theme: ${loanProvider.settingsData!["theme"]}",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text("Language: ${loanProvider.settingsData!["language"]}",
-                          style: TextStyle(fontSize: 18)),
-                    ],
-                  ),
-                );
-              }
-            },
-          ),
-
           // Display Images
           Expanded(
             child: loanProvider.unsplashPhotos.isNotEmpty
